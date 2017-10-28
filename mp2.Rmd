@@ -23,7 +23,7 @@ load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
 ```
-
+We made a function called make_state_graphic which takes a the state_name as an argument and outputs a table with the candidate name, incumbant values(true/false), party, ge_winner (true/false), and the total contribution
 ```{r}
 make_state_graphic <- function(state_name) {
   contribution_totals <- contributions %>%
@@ -40,8 +40,17 @@ make_state_graphic <- function(state_name) {
            party, 
            ge_winner, 
            total_cont) %>%
-    mutate(total_cont = ifelse(is.na(total_cont),0,total_cont))
+    mutate(total_cont = ifelse(is.na(total_cont),0,total_cont)) %>%
+    filter(ge_winner == 'W')
+  
+  state_cands %>% 
+    ggplot(aes(x = candidate_name, y = total_cont, fill = party)) +
+    geom_col() +
+    facet_wrap(~incumbent, ncol = 2, scales = "free_x") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+    
 }
 
 make_state_graphic("OH")
 ```
+We want to make a function for the graphics
