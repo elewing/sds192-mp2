@@ -16,8 +16,32 @@ This project is so interesting and relevant to my life!
 This is my change
 
 ```{r, include=FALSE}
+library(tidyverse)
+library(dplyr)
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
+```
+
+```{r}
+make_state_graphic <- function(state_name) {
+  contribution_totals <- contributions %>%
+    filter(state == state_name) %>%
+    group_by(cand_id) %>%
+    summarize(total_cont = sum(transaction_amt))
+  
+  state_cands <- house_elections %>%
+    filter(state == state_name) %>%
+    filter(!is.na(ge_winner)) %>%
+    left_join(contribution_totals, by = c("fec_id" = "cand_id")) %>%
+    select(candidate_name, 
+           incumbent, 
+           party, 
+           ge_winner, 
+           total_cont) %>%
+    mutate(total_cont = ifelse(is.na(total_cont),0,total_cont))
+}
+
+make_state_graphic("OH")
 ```
