@@ -1,10 +1,6 @@
 ---
 title: "Mini-Project 2"
-<<<<<<< HEAD
-author: "GE Ranieri"
-=======
 author: "Eleanor Ewing, GE Ranieri, Farah Samawi"
->>>>>>> 5c9f6459d3a4ff887c78f641bed6cdd34fda533b
 date: "October 31, 2017"
 output: html_document
 ---
