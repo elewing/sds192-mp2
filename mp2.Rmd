@@ -30,6 +30,9 @@ make_state_graphic <- function(state_name) {
   state_cands <- house_elections %>%
     filter(state == state_name) %>%
     filter(!is.na(ge_winner)) %>%
+    mutate(incumbent = ifelse(incumbent, "Incumbent", "Not Incumbent")) %>%
+    mutate(party = ifelse(party == "D", "Democrat", 
+                          ifelse(party == "R", "Republican", "Other"))) %>%
     left_join(contribution_totals, by = c("fec_id" = "cand_id")) %>%
     select(candidate_name, 
            incumbent, 
@@ -42,11 +45,16 @@ make_state_graphic <- function(state_name) {
   state_cands %>% 
     ggplot(aes(x = candidate_name, y = total_cont, fill = party)) +
     geom_col() +
-    facet_wrap(~incumbent, ncol = 2, scales = "free_x") +
+    scale_x_discrete(name = "Name") +
+    scale_y_continuous(name = "Total Contributions") +
+    scale_fill_manual(name = "Party", 
+                      values = c("#323994", "#A3292A", "#FFFBC2")) +
+    facet_grid(~incumbent, scales = "free_x", space = "free") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
     
 }
 
 make_state_graphic("OH")
 ```
+
 We want to make a function for the graphics
