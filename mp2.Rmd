@@ -22,38 +22,53 @@ load("contributions.rda")
 We made a function called make_state_graphic which takes a the state_name as an argument and outputs a table with the candidate name, incumbant values(true/false), party, ge_winner (true/false), and the total contribution
 ```{r}
 make_state_graphic <- function(state_name) {
+  # wrangling contributions
   contribution_totals <- contributions %>%
-    filter(state == state_name) %>%
+    filter(state == state_name) %>%  # only looking at in-state contribs
     group_by(cand_id) %>%
-    summarize(total_cont = sum(transaction_amt))
+    summarize(total_cont = sum(transaction_amt)) # sum contribs per cand
   
+  # wrangling candidate info
   state_cands <- house_elections %>%
-    filter(state == state_name) %>%
-    filter(!is.na(ge_winner)) %>%
-    mutate(incumbent = ifelse(incumbent, "Incumbent", "Not Incumbent")) %>%
-    mutate(party = ifelse(party == "D", "Democrat", 
-                          ifelse(party == "R", "Republican", "Other"))) %>%
+    filter(state == state_name) %>%  # select same state as above
+    filter(!is.na(ge_winner)) %>%    # we only care about general election
+    mutate(incumbent = ifelse(incumbent, 
+                              "Incumbent", 
+                              "Not Incumbent")) %>%
+    mutate(party = ifelse(party == "D", 
+                          "Democrat", 
+                          ifelse(party == "R", 
+                                 "Republican",
+                                 "Other"))) %>%
+    # join candidate table to contributions table on candidate's ID
     left_join(contribution_totals, by = c("fec_id" = "cand_id")) %>%
     select(candidate_name, 
            incumbent, 
            party, 
            ge_winner, 
            total_cont) %>%
+    # represent "NA" contributions as 0, for graphing
     mutate(total_cont = ifelse(is.na(total_cont),0,total_cont)) %>%
-    filter(ge_winner == 'W')
+    filter(ge_winner == 'W')  # only looking at winners
   
+  # plotting using ggplot geom_col (bar graph)
   state_cands %>% 
     ggplot(aes(x = candidate_name, y = total_cont, fill = party)) +
     geom_col() +
+    # aesthetics
     scale_x_discrete(name = "Name") +
     scale_y_continuous(name = "Total Contributions") +
     scale_fill_manual(name = "Party", 
                       values = c("#323994", "#A3292A", "#FFFBC2")) +
-    facet_grid(~incumbent, scales = "free_x", space = "free") +
+    facet_grid(~incumbent, 
+               scales = "free_x",   # avoids showing every name twice
+                                    # y-scales not free, for easier comparison
+               space = "free") +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
     
 }
 
+#generate graphics per state, using state postal abbreviations
 make_state_graphic("OH")
 make_state_graphic("CA")
 ```
