@@ -8,8 +8,6 @@ output: html_document
 
 ## Loading the data
 
-This project is so interesting and relevant to my life!
-This is my change
 
 ```{r, include=FALSE}
 library(tidyverse)
@@ -73,4 +71,10 @@ make_state_graphic("OH")
 make_state_graphic("CA")
 ```
 
-We want to make a function for the graphics
+In the American government, house representatives get elected every two years, senators get elected every six years, and Presidents/Vice Presidents get elected every four years. However- during the 2012 election cycle members of the senate, house representatives, and the President/VP were all up for elections. In our project we worked with the Federal Election Commission data for 2012. We decided to investigate the differences in total contributions amongst candidates that won the general election. We chose to look specifically at Ohio and California since these were the states from which the speaker of the house (OH), and the house minority leader (CA) were elected. The day these Federal Elections were held was also the day that President Obama was re-elected.  A total of 435 seats in the house were filled to represent the 50-states, additionally this was the first general election following the 2010 census.   
+
+We decided to facet our bar graph based on if the general election winner was incumbent or not. We also mapped the party (republican vs. democrat) to color, and the total contribution amount to the length of the bar. Each different bar represents a unique candidate that won the general election. For both states, the incumbent representatives far outnumber not incumbent representatives. Also, it seems that the representative with the largest total contribution for each states was an incumbent republican representative. However, the contributions (for both parties) have a large range (from less than .1 million to almost 2.5 million). Therefore, it is hard to come to a consensus on whether the amount of total contributions affects the outcome of elections. It may be possible that there is a minimum amount required for a chance of winning the general elections. However, once this minimum amount is surpassed different variables affect the chance of winning. 
+
+In Ohio, incumbent representatives seem to have higher contribution totals compared to not incumbent representatives. Additionally, even though Ohio is a swing state, the republican party general election winners is thrice that of the democratic party. The candidate with the most total contributions is John Boehner with a total of almost 2.5 million. Not surprisingly, Boehner was elected as the speaker of the house. Since Boehner was an incumbent candidate it seems strange that he had the most contributions. However, candidates are able to use their contributions towards other candidates- therefore Boehner was able to contribute some of this money to other republican candidates. This might explain why so many republican candidates were elected during this season, even though Ohio is a swing state. On the other hand, California is a democratic state. Therefore, we see more than twice the amount of democratic versus republican representatives. In California Nancy Pelosi was elected as the house minority leader. However, Peloski received less than a quarter million dollars in total contributions. Once again, indicating that total contributions cannot be the sole variable that determines winning the general elections.
+
+Overall the data demonstrates that incumbent general election winners outweigh not incumbent general election winners, and total contributions greatly vary amongst representatives. 
