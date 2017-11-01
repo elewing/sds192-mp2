@@ -55,6 +55,7 @@ make_state_graphic <- function(state_name) {
 }
 
 make_state_graphic("OH")
+make_state_graphic("CA")
 ```
 
 We want to make a function for the graphics
